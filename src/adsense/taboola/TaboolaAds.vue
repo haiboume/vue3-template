@@ -1,0 +1,29 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+import type { ITaboola } from '@/types/taboola'
+import { useDeploy } from './utils'
+import { sendAdsClick } from '@/utils/report/adsClick'
+
+import TaboolaLarge from './TaboolaLarge.vue'
+import TaboolaSmall from './TaboolaSmall.vue'
+
+interface IProps {
+  type: 'large' | 'small'
+  adsenses: ITaboola[]
+}
+
+const props = defineProps<IProps>()
+const { adsenses } = computed(() => props).value
+
+// 广告派发
+const { adsenseDeploy } = useDeploy()
+const adsense = adsenseDeploy(adsenses)
+
+const handleClick = () => sendAdsClick(adsense)
+</script>
+
+<template>
+  <TaboolaLarge v-if="type === 'large'" :adsense="adsense" @click-event="handleClick" />
+  <TaboolaSmall v-if="type === 'small'" :adsense="adsense" @click-event="handleClick" />
+</template>
