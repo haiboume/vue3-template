@@ -1,21 +1,32 @@
 import { getUserId } from '@/utils/user'
-import { taboolaConfig } from '@/config'
+import { taboolaConfig, baseConfig } from '@/config'
 
-const taboola_url = `https://api.taboola.com/2.0/json/${taboolaConfig.channel}/recommendations.get`
-const requestBodyCreat = (count: number) => ({
-  placements: [
-    {
-      name: taboolaConfig.placement + '1',
-      recCount: count,
-      organicType: 'MIX',
-      thumbnail: { width: 750, height: 450 }
-    }
-  ],
+const { channel, api_key, view_id } = taboolaConfig
+
+const taboola_url = `https://api.taboola.com/2.0/json/${channel}/recommendations.get`
+
+const createPlacements = (adsCount: number, placementCount: number) => {
+  const adsPlacements: any[] = []
+
+  for (let j = 0; j < adsCount; j++) {
+    adsPlacements.push({
+      name: `${taboolaConfig.placement}-${placementCount}-${j + 1}`,
+      recCount: 1,
+      organicType: 'mix',
+      thumbnail: { width: 720, height: 450 }
+    })
+  }
+
+  return [...adsPlacements]
+}
+
+const requestBodyCreat = (session: string, placementCount: number, ads: number) => ({
+  placements: createPlacements(ads, placementCount),
   app: {
+    name: channel,
+    apiKey: api_key,
     type: 'MOBILE',
-    apiKey: taboolaConfig.api_key,
     origin: 'CLIENT',
-    name: taboolaConfig.channel,
     mobileData: {
       device: {
         locale: navigator && navigator.language,
@@ -25,12 +36,12 @@ const requestBodyCreat = (count: number) => ({
   },
   source: {
     type: 'HOME',
-    id: taboolaConfig.source_id,
-    url: 'http://www.' + taboolaConfig.channel + '.com/'
+    id: `${channel}-${baseConfig.web_title.split(' ').join('-').toLowerCase()}`,
+    url: `http://www.${channel}.com`
   },
-  view: { id: taboolaConfig.view_id },
+  view: { id: view_id },
   user: {
-    session: 'init',
+    session,
     agent: navigator && navigator.userAgent,
     device: getUserId(180)
   }

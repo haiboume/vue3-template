@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 
-import { sendPageView } from '@/utils/report/pageView'
+import { sendPageView } from '@/analytics/pageView'
 import { useAdsense } from '@/store/adsense'
 import { baseConfig } from '@/config'
 

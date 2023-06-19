@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { fetchTaboolaRequest } from '@/service/taboola/adsense'
+import { fetchAdsenseData } from '@/service/taboola/adsense'
 import { IState } from './types'
 import { localCache } from '@/utils/cache'
 import { ALLOW_TABOOLA } from '@/constant'
@@ -29,7 +29,7 @@ const useTaboolaStore = defineStore('taboola', {
 
       this.requestStatus = 'started'
       this.requestCount++
-      fetchTaboolaRequest(count)
+      fetchAdsenseData(count)
         .then((res) => {
           this.tempList.push(...res)
         })

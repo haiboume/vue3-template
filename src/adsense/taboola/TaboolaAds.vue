@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import type { ITaboola } from '@/types/taboola'
 import { useDeploy } from './utils'
-import { sendAdsClick } from '@/utils/report/adsClick'
+import { adsClick } from '@/analytics/adsClick'
 
 import TaboolaLarge from './TaboolaLarge.vue'
 import TaboolaSmall from './TaboolaSmall.vue'
@@ -20,7 +20,7 @@ const { adsenses } = computed(() => props).value
 const { adsenseDeploy } = useDeploy()
 const adsense = adsenseDeploy(adsenses)
 
-const handleClick = () => sendAdsClick(adsense)
+const handleClick = () => adsClick(adsense)
 </script>
 
 <template>
