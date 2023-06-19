@@ -8,12 +8,11 @@ const useDeploy = () => {
     if (indexList.length === 0) {
       indexList = adsenses.map((_, i) => i)
     }
+
     return adsenses[index]
   }
 
-  return {
-    adsenseDeploy
-  }
+  return adsenseDeploy
 }
 
-export { useDeploy }
+export default useDeploy()
